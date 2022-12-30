@@ -1,4 +1,4 @@
-name: 'Check iRules using irulescan'
+name: 'iRules Security Scan'
 description: 'Use irulescan to check iRules for security issues.'
 author: 'Simon Kowallik <github@simonkowallik.com>'
 branding:
