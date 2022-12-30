@@ -1,0 +1,27 @@
+name: "Demo: Failing workflow step"
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  irulescan-action:
+    runs-on: ubuntu-latest
+    name: "Workflow"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run irulescan-action
+        uses: simonkowallik/irulescan-action@main
+        id: irulescan_action_id
+        continue-on-error: true  # report success even when this step fails
+        with:
+          scandir: example
+          # the actual result does not match the result within the file
+          expected_results_file: example/results_dont_match.yaml
+
+      - name: The above step is expected to fail
+        # https://docs.github.com/en/actions/learn-github-actions/contexts#steps-context
+        if: steps.irulescan_action_id.outcome == 'failure'
+        run: exit 1

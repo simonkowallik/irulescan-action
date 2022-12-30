@@ -1,0 +1,3 @@
+when HTTP_RESPONSE {
+    expr 123
+}

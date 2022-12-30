@@ -1,0 +1,42 @@
+name: "Functional Tests"
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  irulescan-action:
+    runs-on: ubuntu-latest
+    name: "Workflow"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run irulescan-action
+        uses: simonkowallik/irulescan-action@main
+        id: my_irulescan_action_id
+
+      - name: Save irulescan output to file
+        run: |
+          cat << 'EOF' > irulescan_result.yaml
+          ${{ steps.my_irulescan_action_id.outputs.result }}
+          EOF
+
+      - name: Check if valid yaml is produced
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: irulescan_result.yaml
+
+      - name: Run irulescan-action with custom docker CMD
+        uses: simonkowallik/irulescan-action@main
+        id: irulescan_action_custom_cmd
+        with:
+#          cmd: irulescan check example/irules/wrong_extension.txt
+          cmd: irulescan check example/irules/wrong_extension.txt
+
+      - name: Check custom docker CMD output
+        run: |
+          cat << 'EOF' > irulescan_output.txt
+          ${{ steps.irulescan_action_custom_cmd.outputs.result }}
+          EOF
+          grep 'WARNING' irulescan_output.txt

@@ -1,0 +1,20 @@
+name: "Demo: Successful"
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  irulescan-action:
+    runs-on: ubuntu-latest
+    name: "Workflow"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run irulescan-action
+        uses: simonkowallik/irulescan-action@main
+        with:
+          scandir: example
+          # the irulescan action output does not differ from specified file, otherwise this step would fail
+          expected_results_file: example/expected_results.yaml

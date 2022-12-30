@@ -1,0 +1,24 @@
+name: 'Check iRules using irulescan'
+description: 'Use irulescan to check iRules for security issues.'
+author: 'Simon Kowallik <github@simonkowallik.com>'
+branding:
+  icon: 'shield'
+  color: 'red'
+inputs:
+  scandir:
+    description: 'Scan specific subdirectory of repository'
+    required: false
+  expected_results_file:
+    description: 'YAML file with expected results (eg. previous irulescan output)'
+    required: false
+  cmd:
+    description: 'Use custom docker CMD'
+    required: false
+outputs:
+  result:
+    description: 'irulescan output'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.cmd }}

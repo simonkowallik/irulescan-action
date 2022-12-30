@@ -1,0 +1,6 @@
+---
+/irules/expr1.tcl: |
+  DANGEROUS: Dangerous unquoted expr at `$one` in `expr $one`
+/irules/expr2.irule: |
+  WARNING: Unquoted expr at `2` in `expr 2`
+/irules/ok.irule: |

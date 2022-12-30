@@ -1,0 +1,18 @@
+name: "Demo: Custom CMD"
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  irulescan-action:
+    runs-on: ubuntu-latest
+    name: "Workflow"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run irulescan-action with custom docker CMD
+        uses: simonkowallik/irulescan-action@main
+        with:
+          cmd: irulescan check example/irules/wrong_extension.txt

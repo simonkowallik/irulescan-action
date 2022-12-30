@@ -1,0 +1,43 @@
+name: "Demo: Advanced Usage"
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  irulescan-action:
+    runs-on: ubuntu-latest
+    name: "Workflow"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run irulescan-action
+        uses: simonkowallik/irulescan-action@main
+        id: my_irulescan_action_id
+
+      - name: Save irulescan output to file
+        run: |
+          cat << 'EOF' > irulescan_result.yaml
+          ${{ steps.my_irulescan_action_id.outputs.result }}
+          EOF
+
+      - name: "Do whatever you need to do with the output file"
+        run: |
+          cat irulescan_result.yaml
+
+      - name: "Example 1: yamllint"
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: irulescan_result.yaml
+
+      - name: "Example 2: yaml2json"
+        uses: fabasoad/data-format-converter-action@main
+        id: yaml2json
+        with:
+          input: irulescan_result.yaml
+          from: yaml
+          to: json
+
+      - name: "Example 2: yaml2json : Print result"
+        run: echo "${{ steps.yaml2json.outputs.output }}"
