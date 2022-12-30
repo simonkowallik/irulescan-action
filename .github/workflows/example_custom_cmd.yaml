@@ -3,6 +3,8 @@ name: "Demo: Custom CMD"
 on:
   workflow_dispatch:
   push:
+  schedule:
+    - cron: '12 6 3 */2 *'
 
 jobs:
   irulescan-action:
