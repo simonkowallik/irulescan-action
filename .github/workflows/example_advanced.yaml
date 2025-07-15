@@ -29,12 +29,9 @@ jobs:
           cat irulescan_result.json
 
       - name: "Example 1: json2yaml"
-        uses: fabasoad/data-format-converter-action@main
-        id: json2yaml
+        uses: mikefarah/yq@master
         with:
-          input: irulescan_result.json
-          from: json
-          to: yaml
+          cmd: yq -p=json -o=yaml irulescan_result.json
 
       - name: "Example 2: json2yaml : Print result"
         run: echo "${{ steps.json2yaml.outputs.output }}"
