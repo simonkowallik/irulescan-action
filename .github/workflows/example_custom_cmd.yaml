@@ -12,9 +12,9 @@ jobs:
     name: "Workflow"
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run irulescan-action with custom docker CMD
-        uses: simonkowallik/irulescan-action@main
+        uses: simonkowallik/irulescan-action@v3
         with:
           cmd: irulescan check example/irules/wrong_extension.txt

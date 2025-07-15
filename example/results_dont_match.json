@@ -1,0 +1,26 @@
+[
+  {
+    "filepath": "irules/expr1.tcl",
+    "warning": [],
+    "dangerous": [
+      {
+        "message": "dangerous unsafe expression, use braces `{ .. }`",
+        "issue_location": "$one",
+        "context": "expr $one",
+        "line": 3
+      }
+    ]
+  },
+  {
+    "filepath": "irules/expr2.irule",
+    "warning": [
+      {
+        "message": "unsafe expression, use braces `{ .. }`",
+        "issue_location": "2",
+        "context": "expr 2",
+        "line": 2
+      }
+    ],
+    "dangerous": []
+  }
+]

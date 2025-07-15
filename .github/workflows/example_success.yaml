@@ -12,11 +12,11 @@ jobs:
     name: "Workflow"
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run irulescan-action
-        uses: simonkowallik/irulescan-action@main
+        uses: simonkowallik/irulescan-action@v3
         with:
           scandir: example
           # the irulescan action output does not differ from specified file, otherwise this step would fail
-          expected_results_file: example/expected_results.yaml
+          expected_results_file: example/expected_results.json

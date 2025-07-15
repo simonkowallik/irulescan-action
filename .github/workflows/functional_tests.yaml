@@ -12,7 +12,7 @@ jobs:
     name: "Workflow"
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run irulescan-action
         uses: simonkowallik/irulescan-action@main
@@ -20,20 +20,19 @@ jobs:
 
       - name: Save irulescan output to file
         run: |
-          cat << 'EOF' > irulescan_result.yaml
+          cat << 'EOF' > irulescan_result.json
           ${{ steps.my_irulescan_action_id.outputs.result }}
           EOF
 
-      - name: Check if valid yaml is produced
-        uses: ibiqlik/action-yamllint@v3
+      - name: Convert json to yaml using yq
+        uses: mikefarah/yq@master
         with:
-          file_or_dir: irulescan_result.yaml
+          cmd: yq -p=json -o=yaml irulescan_result.json
 
       - name: Run irulescan-action with custom docker CMD
         uses: simonkowallik/irulescan-action@main
         id: irulescan_action_custom_cmd
         with:
-#          cmd: irulescan check example/irules/wrong_extension.txt
           cmd: irulescan check example/irules/wrong_extension.txt
 
       - name: Check custom docker CMD output

@@ -1,3 +1,0 @@
----
-/irules/expr1.tcl: |
-  DANGEROUS: Dangerous unquoted expr at `$one` in `expr $one`

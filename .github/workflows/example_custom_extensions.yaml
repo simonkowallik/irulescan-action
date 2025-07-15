@@ -1,0 +1,27 @@
+name: "Demo: Custom File Extensions"
+
+on:
+  workflow_dispatch:
+  push:
+  schedule:
+    - cron: '12 6 3 */2 *'
+
+jobs:
+  irulescan-action:
+    runs-on: ubuntu-latest
+    name: "Workflow"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run irulescan-action with custom file extensions
+        uses: simonkowallik/irulescan-action@v3
+        id: my_irulescan_action_id
+        with:
+          file_extensions: '.txt'
+          scandir: 'example/'
+
+      - name: Show irulescan output
+        run: |
+          echo "irulescan results:"
+          echo "${{ steps.my_irulescan_action_id.outputs.result }}"

@@ -12,34 +12,29 @@ jobs:
     name: "Workflow"
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run irulescan-action
-        uses: simonkowallik/irulescan-action@main
+        uses: simonkowallik/irulescan-action@v3
         id: my_irulescan_action_id
 
       - name: Save irulescan output to file
         run: |
-          cat << 'EOF' > irulescan_result.yaml
+          cat << 'EOF' > irulescan_result.json
           ${{ steps.my_irulescan_action_id.outputs.result }}
           EOF
 
       - name: "Do whatever you need to do with the output file"
         run: |
-          cat irulescan_result.yaml
+          cat irulescan_result.json
 
-      - name: "Example 1: yamllint"
-        uses: ibiqlik/action-yamllint@v3
-        with:
-          file_or_dir: irulescan_result.yaml
-
-      - name: "Example 2: yaml2json"
+      - name: "Example 1: json2yaml"
         uses: fabasoad/data-format-converter-action@main
-        id: yaml2json
+        id: json2yaml
         with:
-          input: irulescan_result.yaml
-          from: yaml
-          to: json
+          input: irulescan_result.json
+          from: json
+          to: yaml
 
-      - name: "Example 2: yaml2json : Print result"
-        run: echo "${{ steps.yaml2json.outputs.output }}"
+      - name: "Example 2: json2yaml : Print result"
+        run: echo "${{ steps.json2yaml.outputs.output }}"

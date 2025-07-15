@@ -1,29 +1,41 @@
-#!/usr/bin/env bash
-set -e
+#!/bin/sh
+#set -e
 
 #https://github.com/orgs/community/discussions/26288#discussioncomment-3876281
 delimiter=$(cat /proc/sys/kernel/random/uuid)
 echo "result<<${delimiter}" >> $GITHUB_OUTPUT
 
-# run default commands when no args are provided
+exit_code=0
+
+# Set custom file extensions if provided
+if [[ -n "$INPUT_FILE_EXTENSIONS" ]]; then
+    export IRULESCAN_FILE_EXTENSIONS="$INPUT_FILE_EXTENSIONS"
+fi
+
+# run default commands when no args/CMD provided
 if [[ -z "$1" ]];
 then
-
-    /scandir.sh $(realpath ${GITHUB_WORKSPACE}/${INPUT_SCANDIR}) > /results.yaml
-
     if [[ -z "$INPUT_EXPECTED_RESULTS_FILE" ]];
     then
-        echo "$(cat /results.yaml)" >> $GITHUB_OUTPUT
-        cat /results.yaml
+        cd $(realpath ${GITHUB_WORKSPACE}/${INPUT_SCANDIR})
+        irulescan check . > /tmp/results.json
+        exit_code=$?
+        echo "$(cat /tmp/results.json)" >> $GITHUB_OUTPUT
+        echo "$(cat /tmp/results.json)"
     else
-        echo $(diff --ignore-blank-lines --ignore-trailing-space --ignore-space-change $INPUT_EXPECTED_RESULTS_FILE /results.yaml) > output.txt
-        echo "$(cat output.txt)" >> $GITHUB_OUTPUT
-        cat output.txt
+        cd $(realpath ${GITHUB_WORKSPACE}/${INPUT_SCANDIR})
+        irulescan checkref $(realpath ${GITHUB_WORKSPACE}/${INPUT_EXPECTED_RESULTS_FILE}) > /tmp/diff.txt
+        exit_code=$?
+        echo "$(cat /tmp/diff.txt)" >> $GITHUB_OUTPUT
+        echo "$(cat /tmp/diff.txt)"
     fi
 else
-    echo $(exec $@) > output.txt
-    echo "$(cat output.txt)" >> $GITHUB_OUTPUT
-    cat output.txt
+    cd $(realpath ${GITHUB_WORKSPACE})
+    echo $(exec $@) > /tmp/output.txt
+    exit_code=$?
+    echo "$(cat /tmp/output.txt)" >> $GITHUB_OUTPUT
+    echo "$(cat /tmp/output.txt)"
 fi
 echo "${delimiter}" >> $GITHUB_OUTPUT
 
+exit $exit_code

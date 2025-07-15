@@ -1,5 +1,5 @@
 name: 'iRules Security Scan'
-description: 'Use irulescan to check iRules for security issues.'
+description: 'Use irulescan to check F5 iRules for security issues.'
 author: 'Simon Kowallik <github@simonkowallik.com>'
 branding:
   icon: 'shield'
@@ -10,6 +10,9 @@ inputs:
     required: false
   expected_results_file:
     description: 'YAML file with expected results (eg. previous irulescan output)'
+    required: false
+  file_extensions:
+    description: 'Comma-separated list of file extensions to scan (default: .tcl,.irul,.irule)'
     required: false
   cmd:
     description: 'Use custom docker CMD'
