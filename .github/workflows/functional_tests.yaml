@@ -40,4 +40,4 @@ jobs:
           cat << 'EOF' > irulescan_output.txt
           ${{ steps.irulescan_action_custom_cmd.outputs.result }}
           EOF
-          grep 'WARNING' irulescan_output.txt
+          grep -i 'warning' irulescan_output.txt
