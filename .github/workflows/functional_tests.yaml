@@ -33,7 +33,7 @@ jobs:
         uses: simonkowallik/irulescan-action@main
         id: irulescan_action_custom_cmd
         with:
-          cmd: irulescan check example/irules/wrong_extension.txt
+          cmd: irulescan check example/irules/non_default_extension.txt
 
       - name: Check custom docker CMD output
         run: |
